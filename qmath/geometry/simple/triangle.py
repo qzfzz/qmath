@@ -7,7 +7,7 @@ class Triangle:
     @staticmethod
     def get_area(side_a, side_b, side_c):
 
-        if not (side_a + side_b > side_c and side_b + side_c > side_a and side_c + side_a > side_b):
+        if not Triangle.is_triangle_valid(side_a, side_b, side_c):
             raise Exception('invalid triangle')
 
         p = (side_a + side_b + side_c) / 2
@@ -16,13 +16,21 @@ class Triangle:
 
         return area
 
+    @staticmethod
+    def is_triangle_valid(side_a, side_b, side_c):
+        if side_a + side_b > side_c and side_b + side_c > side_a and side_c + side_a > side_b:
+            return True
+
+        return False
+
 
 def test(side_a, side_b, side_c):
     return Triangle.get_area(side_a, side_b, side_c)
 
 
 if '__main__' == __name__:
-    print(test(3, 4, 5))
+    assert(test(3, 4, 5) == 6)
+
 
 
 
