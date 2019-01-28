@@ -2,7 +2,7 @@
 # coding:utf-8
 # author bruce
 
-from qgeo.twod.lineequation import LineEquation
+from qmath.geometry.c2d.lineequation import LineEquation
 
 
 class Vector:
