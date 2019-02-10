@@ -2,6 +2,7 @@
 # coding:utf-8
 # author bruce
 
+from qmath.geometry.c2d.pointxy import PointXY
 
 class LineEquation:
     """
@@ -21,19 +22,25 @@ class LineEquation:
     def __str__(self):
         return "{k: " + str(self.k) + ", b: " + str(self.b) + ", x: " + str(self.x) + ", y: " + str(self.y) + "}"
 
-    def is_point_online(self, pointxy):
+    def is_point_on_line(self, pointxy):
         """
         test if a point on a line
         """
 
         if self.k is not None and self.k * pointxy.x + self.b == pointxy.y:
             return True
-        else:
-            return False
+
+        if self.x is not None and pointxy.x == self.x:
+            return True
+
+        if self.y is not None and pointxy.y == self.y:
+            return True
+
+        return False
 
     def get_x_from_y(self, y):
         if self.k is not None and self.k != 0:
-            x = (self.y - self.b) / self.k
+            x = (y - self.b) / self.k
             return x
 
         if self.x is not None:
@@ -61,7 +68,7 @@ class LineEquation:
         """
 
         dis_x = point1.x - point2.x
-        dis_y = point2.y - point2.y
+        dis_y = point1.y - point2.y
 
         if dis_x == dis_y and dis_x == 0:
             raise Exception("point1:" + str(point1) + " is equal point2: " + str(point2))
@@ -85,11 +92,53 @@ class LineEquation:
 
         raise Exception("unknown exception")
 
+    def get_foot_point_of_line(self, point):
+
+        if self.is_point_on_line(point):
+            return point
+
+        if self.k is not None:
+            pass
+
+        if self.x is not None:
+            return PointXY(self.x, point.y)
+
+        if self.y is not None:
+            return PointXY(point.x, self.y)
+
+        k_vertical = -self.k
+        b_vertical = point.y - k_vertical * point.x
+
+        x = (self.b - b_vertical)/(k_vertical - self.k)
+        y = k_vertical * x + b_vertical
+
+        return PointXY(x, y)
 
 if __name__ == '__main__':
 
     line = LineEquation(9, 2, None, None)
     print(line)
 
+    pointxy = PointXY(1, 11)
+    print(line.is_point_on_line(pointxy))
 
+    pointxy = PointXY(1, 10)
+    print(line.is_point_on_line(pointxy))
 
+    print(line.get_x_from_y(2))
+    print(line.get_x_from_y(11))
+
+    print(line.get_y_from_x(11))
+    print(line.get_y_from_x(2))
+
+    print(line.get_foot_point_of_line(PointXY(1,2)))
+
+    line = LineEquation(1, 0)
+    print(line)
+
+    print(line.get_foot_point_of_line(PointXY(1,2)))
+    print(line.get_foot_point_of_line(PointXY(1, 1)))
+
+    print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(2,2)))
+    print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(1,2)))
+    print(LineEquation.get_line_equation_from_two_points(PointXY(2,2), PointXY(1,2)))
