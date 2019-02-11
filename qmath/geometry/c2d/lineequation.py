@@ -3,6 +3,7 @@
 # author bruce
 
 from qmath.geometry.c2d.pointxy import PointXY
+import math
 
 class LineEquation:
     """
@@ -93,7 +94,11 @@ class LineEquation:
         raise Exception("unknown exception")
 
     def get_foot_point_of_line(self, point):
-
+        """
+        get foot of a perpendicular
+        :param point:
+        :return:
+        """
         if self.is_point_on_line(point):
             return point
 
@@ -114,10 +119,55 @@ class LineEquation:
 
         return PointXY(x, y)
 
+    def get_perpendicular_line(self, point):
+        assert(point)
+
+        if self.k is not None:
+            k_vertical = -1 / self.k
+            b_vertical = point.y - k_vertical * point.x
+
+            return LineEquation(k_vertical, b_vertical)
+
+        if self.x is not None:
+            return LineEquation(y=point.y, b=point.y)
+
+        if self.y is not None:
+            return LineEquation(x=point.x)
+
+        raise Exception('unknown exception')
+
+    def get_parallel_lines_for_distance(self, distance):
+
+        if self.k is not None:
+            k_vertical = -1 / self.k
+            b_vertical = self.b
+            x_left = distance * math.sqrt(1 / (pow(k_vertical, 2) + 1))
+            y_left = k_vertical * x_left + b_vertical
+            # //y_left = self.k * x_left + b_left
+            b_left = y_left - self.k * x_left
+
+            x_right = -distance * math.sqrt(1 / (pow(k_vertical, 2) + 1))
+            y_right = k_vertical * x_right + b_vertical
+            # y_left = self.k * x_left + b_right
+            b_right = y_right - self.k * x_right
+
+            return [LineEquation(self.k, b_left), LineEquation(self.k, b_right)]
+
+        if self.x is not None:
+            return [LineEquation(x=self.x + distance), LineEquation(x=self.x - distance)]
+
+        if self.y is not None:
+            return [LineEquation(y=self.y + distance, b=self.y + distance), LineEquation(y=self.y - distance, b=self.y - distance)]
+
+        raise Exception('unknown exception')
+
+
 if __name__ == '__main__':
 
     line = LineEquation(9, 2, None, None)
     print(line)
+    print('get_parallel_lines_for_distance')
+    print(line.get_parallel_lines_for_distance(1))
 
     pointxy = PointXY(1, 11)
     print(line.is_point_on_line(pointxy))
@@ -142,3 +192,4 @@ if __name__ == '__main__':
     print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(2,2)))
     print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(1,2)))
     print(LineEquation.get_line_equation_from_two_points(PointXY(2,2), PointXY(1,2)))
+
