@@ -182,6 +182,8 @@ if __name__ == '__main__':
     print(line.get_y_from_x(2))
 
     print(line.get_foot_point_of_line(PointXY(1,2)))
+    print('get_parallel_lines_for_distance x=1')
+    print(line.get_parallel_lines_for_distance(1))
 
     line = LineEquation(1, 0)
     print(line)
@@ -192,4 +194,8 @@ if __name__ == '__main__':
     print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(2,2)))
     print(LineEquation.get_line_equation_from_two_points(PointXY(1,1), PointXY(1,2)))
     print(LineEquation.get_line_equation_from_two_points(PointXY(2,2), PointXY(1,2)))
+
+    line = LineEquation(x=1)
+    print(line.get_parallel_lines_for_distance(1))
+    print(line.get_parallel_lines_for_distance(2))
 
