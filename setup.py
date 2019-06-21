@@ -3,7 +3,7 @@
 
 from setuptools import setup
 
-setup(name='qfmath',
+setup(name='qmath',
       version='0.0.1.a',
       description='qzf math library for python3',
       url='http://github.com/qzfzz/qmath',

@@ -3,6 +3,7 @@
 # author bruce
 
 from qmath.geometry.c2d.pointxy import PointXY
+from qmath.geometry.c2d.lineequation_general import *
 import math
 
 class LineEquation:
@@ -161,10 +162,32 @@ class LineEquation:
 
         raise Exception('unknown exception')
 
+    def get_distance_between_point_and_line(self, point):
+        return False
+
+    def get_line_equation_in_general_form(self):
+        # y = kx +b
+        # y-kx-b=0
+        if self.x is not None:
+            # y-kx-b=0
+            # 0*x + 1*y -b = 0
+            return LineEquationGeneral(0, 1, -self.b)
+
+        if self.y is not None:
+            # y-kx-b=0
+
+            return LineEquationGeneral(-self.k, 0, -self.b)
+
+        # y-b=0
+        return LineEquationGeneral(-self.k, 1, -self.b)
 
 if __name__ == '__main__':
 
     line = LineEquation(9, 2, None, None)
+    x = line.get_line_equation_in_general_form()
+
+    print(x)
+
     print(line)
     print('get_parallel_lines_for_distance')
     print(line.get_parallel_lines_for_distance(1))
